@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Assembly>C:\ProgramData\Autodesk\Revit\Addins\2022\NAME_CONSTRUCTOR.dll</Assembly>
+    <ClientId>9aa0395f-653c-4de6-ba20-da9390a8c6d4</ClientId>
+    <FullClassName>NAME_CONSTRUCTOR.NAME_CONSTRUCTOR</FullClassName>
+    <Text>NAME_CONSTRUCTOR</Text>
+    <VisibilityMode>AlwaysVisible</VisibilityMode>
+    <VendorId>ADSK</VendorId>
+    <VendorDescription>Autodesk, www.autodesk.com</VendorDescription>
+  </AddIn>
+</RevitAddIns>

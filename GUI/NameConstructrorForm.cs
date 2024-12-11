@@ -1,6 +1,9 @@
 ﻿using Autodesk.Revit.DB;
+using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Form = System.Windows.Forms.Form;
 
@@ -9,8 +12,11 @@ namespace NAME_CONSTRUCTOR
     public partial class NameConstructrorForm : Form
     {
         static private string DataPath = "B:\\BIM\\00_РЕСУРСЫ\\AUTODESK REVIT\\Плагины\\CoordinatorPlugin\\NameConstructorData\\";
+        string _logsFolderPath = "B:\\BIM\\00_РЕСУРСЫ\\AUTODESK REVIT\\Плагины\\CoordinatorPlugin\\NameConstructorData\\Logs";
         static private string _Control_buttonName1 = "Сформировать";
         static private string _Control_buttonName2 = "Очистить";
+        private Logger _logger = Logger.Instance;
+
 
         #region Конструктор Singletone
         private static NameConstructrorForm Instance;
@@ -19,6 +25,8 @@ namespace NAME_CONSTRUCTOR
             InitializeComponent();
             InitComboBoxes();
             Control_button.Text = "Сформировать";
+
+            this.FormClosed += Form_Closed;
         }
         #endregion
         public static NameConstructrorForm GetInstance()
@@ -67,7 +75,7 @@ namespace NAME_CONSTRUCTOR
             Field2_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             Field2_comboBox.DropDownWidth = 500;
 
-            Field3_comboBox.DropDownStyle = ComboBoxStyle.DropDownList; 
+            Field3_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             Field3_comboBox.DropDownWidth = 500;
 
             Field4_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -182,11 +190,13 @@ namespace NAME_CONSTRUCTOR
                 string.IsNullOrEmpty(Field3))
                 throw new Exception("Поля пустые");
 
-            string Result = Field1+ Field2+ Field3+ Field4+ Field5;
+            string Result = Field1 + Field2 + Field3 + Field4 + Field5;
 
             Result_textBox.Text = Result;
             Result_textBox.Update();
             Clipboard.SetText(Result);
+
+            _logger.Log(Result);
         }
 
         private void ResultClear()
@@ -195,6 +205,23 @@ namespace NAME_CONSTRUCTOR
             Result_textBox.Update();
         }
 
+        private void Form_Closed(object sender, FormClosedEventArgs e)
+        {
+            string timeNow = DateTime.Now.ToString("yyyy.MM.dd_HH.mm.ss");
+            string user = NAME_CONSTRUCTOR.currentCommandData.Application.Application.Username;
+            string tempFilePath = Path.Combine
+                ($"{_logsFolderPath}\\{user}_RVT_NAME_CONSTR{timeNow}.txt");
 
+            string AllLogs = _logger.GetAllLogs();
+
+            if (string.IsNullOrEmpty(AllLogs))
+                return;
+
+
+            if (Directory.Exists(_logsFolderPath))
+                { File.WriteAllText(tempFilePath, AllLogs); } 
+            _logger.Clear();
+
+        }
     }
 }

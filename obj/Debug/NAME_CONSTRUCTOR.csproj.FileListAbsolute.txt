@@ -6,3 +6,11 @@ C:\Users\DEMENTEVMAX1\OneDrive\Programing\Revit_NAME_CONSTRUCTOR\NAME_CONSTRUCTO
 C:\Users\DEMENTEVMAX1\OneDrive\Programing\Revit_NAME_CONSTRUCTOR\NAME_CONSTRUCTOR\bin\Debug\NAME_CONSTRUCTOR.pdb
 C:\Users\DEMENTEVMAX1\OneDrive\Programing\Revit_NAME_CONSTRUCTOR\NAME_CONSTRUCTOR\obj\Debug\NAME_CONSTRUCTOR.dll
 C:\Users\DEMENTEVMAX1\OneDrive\Programing\Revit_NAME_CONSTRUCTOR\NAME_CONSTRUCTOR\obj\Debug\NAME_CONSTRUCTOR.pdb
+C:\Users\Dementev\Source\Repos\NAME_CONSTRUCTOR\bin\Debug\NAME_CONSTRUCTOR.dll
+C:\Users\Dementev\Source\Repos\NAME_CONSTRUCTOR\bin\Debug\NAME_CONSTRUCTOR.pdb
+C:\Users\Dementev\Source\Repos\NAME_CONSTRUCTOR\obj\Debug\NAME_CONSTRUCTOR.csproj.AssemblyReference.cache
+C:\Users\Dementev\Source\Repos\NAME_CONSTRUCTOR\obj\Debug\NAME_CONSTRUCTOR.NameConstructrorForm.resources
+C:\Users\Dementev\Source\Repos\NAME_CONSTRUCTOR\obj\Debug\NAME_CONSTRUCTOR.csproj.GenerateResource.cache
+C:\Users\Dementev\Source\Repos\NAME_CONSTRUCTOR\obj\Debug\NAME_CONSTRUCTOR.csproj.CoreCompileInputs.cache
+C:\Users\Dementev\Source\Repos\NAME_CONSTRUCTOR\obj\Debug\NAME_CONSTRUCTOR.dll
+C:\Users\Dementev\Source\Repos\NAME_CONSTRUCTOR\obj\Debug\NAME_CONSTRUCTOR.pdb

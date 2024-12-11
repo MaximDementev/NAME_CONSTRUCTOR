@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomaimCode\DataStructures\ObjectDefinition.cs" />
+    <Compile Include="DomaimCode\Util\Logger.cs" />
     <Compile Include="DomaimCode\Util\XmlHandler.cs" />
     <Compile Include="GUI\NameConstructrorForm.cs">
       <SubType>Form</SubType>

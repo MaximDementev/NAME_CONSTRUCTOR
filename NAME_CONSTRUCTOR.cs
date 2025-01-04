@@ -19,7 +19,7 @@ namespace NAME_CONSTRUCTOR
 
             _nameConstructrorForm.Show();
 
-            return Result.Succeeded;
+            return Result.Succeeded;  
         }
         
     }

@@ -12,11 +12,11 @@ namespace NAME_CONSTRUCTOR
     {
         public static ExternalCommandData currentCommandData { get; private set; }
 
-        NameConstructrorForm _nameConstructrorForm = NameConstructrorForm.GetInstance();
         public Result Execute(ExternalCommandData commandData, ref string message, ElementSet elements)
         {
             currentCommandData = commandData;
-
+            NameConstructrorForm _nameConstructrorForm 
+                = NameConstructrorForm.GetInstance(currentCommandData);
             _nameConstructrorForm.Show();
 
             return Result.Succeeded;  

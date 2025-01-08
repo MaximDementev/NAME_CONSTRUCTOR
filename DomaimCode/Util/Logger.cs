@@ -24,7 +24,7 @@ namespace NAME_CONSTRUCTOR
         internal string GetAllLogs()
         {
             string time = DateTime.Now.ToString();
-            string user = NAME_CONSTRUCTOR.currentCommandData.Application.Application.Username;
+            string user = NameConstructrorForm.commandData.Application.Application.Username;
 
             string logsAsString = ($"==== {time} == {user} ====");
             

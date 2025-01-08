@@ -1,9 +1,7 @@
-﻿using Autodesk.Revit.DB;
-using Autodesk.Revit.UI;
+﻿using Autodesk.Revit.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Form = System.Windows.Forms.Form;
 
@@ -11,14 +9,20 @@ namespace NAME_CONSTRUCTOR
 {
     public partial class NameConstructrorForm : Form
     {
-        static private string DataPath = "B:\\BIM\\00_РЕСУРСЫ\\AUTODESK REVIT\\Плагины\\CoordinatorPlugin\\NameConstructorData\\";
-        string _logsFolderPath = "B:\\BIM\\00_РЕСУРСЫ\\AUTODESK REVIT\\Плагины\\CoordinatorPlugin\\NameConstructorData\\Logs";
+        #region Private Fields
+        static private string DataPath = "C:\\Users\\DEMENTEVMAX1\\OneDrive\\Programing\\Revit_NAME_CONSTRUCTOR\\NAME_CONSTRUCTOR\\Config\\";
+        string _logsFolderPath = "C:\\Users\\DEMENTEVMAX1\\OneDrive\\Programing\\Revit_NAME_CONSTRUCTOR\\NAME_CONSTRUCTOR\\Config\\Logs";
         static private string _Control_buttonName1 = "Сформировать";
         static private string _Control_buttonName2 = "Очистить";
         private Logger _logger = Logger.Instance;
+        #endregion
+
+        #region Public Fields
+        public static ExternalCommandData commandData { get;set;}
+        #endregion
 
 
-        #region Конструктор Singletone
+        #region Constructor 
         private static NameConstructrorForm Instance;
         private NameConstructrorForm()
         {
@@ -29,20 +33,21 @@ namespace NAME_CONSTRUCTOR
             this.FormClosed += Form_Closed;
         }
         #endregion
-        public static NameConstructrorForm GetInstance()
+        public static NameConstructrorForm GetInstance(ExternalCommandData commandData)
         {
             if (Instance == null || Instance.IsDisposed)
             {
                 Instance = new NameConstructrorForm();
+                NameConstructrorForm.commandData = commandData;
             }
             return Instance;
         }
 
-        //________Кнопки________________________________________________________________
+        //________ Buttons ________________________________________________________________
         private void Control_Click(object sender, EventArgs e)
         {
             try
-            {
+            { 
                 if (Control_button.Text == _Control_buttonName1)
                 {
                     Join();
@@ -208,7 +213,7 @@ namespace NAME_CONSTRUCTOR
         private void Form_Closed(object sender, FormClosedEventArgs e)
         {
             string timeNow = DateTime.Now.ToString("yyyy.MM.dd_HH.mm.ss");
-            string user = NAME_CONSTRUCTOR.currentCommandData.Application.Application.Username;
+            string user = commandData.Application.Application.Username;
             string tempFilePath = Path.Combine
                 ($"{_logsFolderPath}\\{user}_RVT_NAME_CONSTR{timeNow}.txt");
 
@@ -216,7 +221,6 @@ namespace NAME_CONSTRUCTOR
 
             if (string.IsNullOrEmpty(AllLogs))
                 return;
-
 
             if (Directory.Exists(_logsFolderPath))
                 { File.WriteAllText(tempFilePath, AllLogs); } 

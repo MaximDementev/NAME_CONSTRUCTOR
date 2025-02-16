@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NAME_CONSTRUCTOR
+﻿namespace NAME_CONSTRUCTOR
 {
     public class ObjectDefinition
     {

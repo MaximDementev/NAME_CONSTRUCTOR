@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Form = System.Windows.Forms.Form;
 
@@ -10,10 +11,10 @@ namespace NAME_CONSTRUCTOR
     public partial class NameConstructrorForm : Form
     {
         #region Private Fields
-        static private string DataPath = "C:\\Users\\DEMENTEVMAX1\\OneDrive\\Programing\\Revit_NAME_CONSTRUCTOR\\NAME_CONSTRUCTOR\\Config\\";
-        string _logsFolderPath = "C:\\Users\\DEMENTEVMAX1\\OneDrive\\Programing\\Revit_NAME_CONSTRUCTOR\\NAME_CONSTRUCTOR\\Config\\Logs";
+        string _logsFolderPath = "C:\\Users\\DEMENTEVMAX1\\OneDrive\\Programing\\Revit_NAME_CONSTRUCTOR\\NAME_CONSTRUCTOR\\Data\\Logs";
         static private string _Control_buttonName1 = "Сформировать";
         static private string _Control_buttonName2 = "Очистить";
+        private Config _config;
         private Logger _logger = Logger.Instance;
         #endregion
 
@@ -24,15 +25,17 @@ namespace NAME_CONSTRUCTOR
 
         #region Constructor 
         private static NameConstructrorForm Instance;
+
         private NameConstructrorForm()
         {
+            _config = new Config();
             InitializeComponent();
             InitComboBoxes();
             Control_button.Text = "Сформировать";
 
             this.FormClosed += Form_Closed;
         }
-        #endregion
+
         public static NameConstructrorForm GetInstance(ExternalCommandData commandData)
         {
             if (Instance == null || Instance.IsDisposed)
@@ -42,6 +45,107 @@ namespace NAME_CONSTRUCTOR
             }
             return Instance;
         }
+
+        private void InitComboBoxes()
+        {
+            FillComboBoxes();
+
+            Field2_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            Field2_comboBox.DropDownWidth = 500;
+
+            Field3_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            Field3_comboBox.DropDownWidth = 500;
+
+            Field4_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            Field4_comboBox.DropDownWidth = 500;
+
+        }
+
+        private void FillComboBoxes()
+        {
+            #region Field #2
+            List<ObjectDefinition> disciplines = new List<ObjectDefinition>();
+            _config.GetDisciplines().Keys.ToList().ForEach(c =>
+            {
+                ObjectDefinition objectDefinition = new ObjectDefinition();
+                objectDefinition.ShortName = c;
+                objectDefinition.FullName = _config.GetDisciplines()[c];
+                disciplines.Add(objectDefinition);
+            });
+
+            if (disciplines == null)
+            {
+                MessageBox.Show("Список дисциплин пуст или не был инициализирован. " +
+                    "Обратитесь к BIM-специалисту");
+            }
+            disciplines.Insert(0, new ObjectDefinition { ShortName = "", FullName = "" });
+            Field2_comboBox.DataSource = disciplines;
+            Field2_comboBox.SelectedIndex = 0;
+            Field2_comboBox.DisplayMember = "FullName";
+            Field2_comboBox.ValueMember = "ShortName";
+            #endregion
+
+            #region Field #3
+            List<ObjectDefinition> objectTypes = new List<ObjectDefinition>();
+            _config.GetObjectTypes().Keys.ToList().ForEach(c =>
+            {
+                ObjectDefinition objectDefinition = new ObjectDefinition();
+                objectDefinition.ShortName = c;
+                objectDefinition.FullName = _config.GetObjectTypes()[c];
+                objectTypes.Add(objectDefinition);
+            });
+
+            if (objectTypes == null)
+            {
+                MessageBox.Show("Список типов объектов пуст или не был инициализирован. " +
+                    "Обратитесь к BIM-специалисту");
+            }
+            objectTypes.Insert(0, new ObjectDefinition { ShortName = "", FullName = "" });
+
+            Field3_comboBox.DataSource = objectTypes;
+            Field3_comboBox.SelectedIndex = 0;
+            Field3_comboBox.DisplayMember = "FullName";
+            Field3_comboBox.ValueMember = "ShortName";
+            #endregion
+
+            #region Field #4
+            List<ObjectDefinition> fileFunctions = new List<ObjectDefinition>();
+            _config.GetFileFunctions().Keys.ToList().ForEach(c =>
+            {
+                ObjectDefinition objectDefinition = new ObjectDefinition();
+                objectDefinition.ShortName = c;
+                objectDefinition.FullName = _config.GetFileFunctions()[c];
+                fileFunctions.Add(objectDefinition);
+            });
+
+            if (fileFunctions == null)
+            {
+                MessageBox.Show("Список подразделов пуст или не был инициализирован. " +
+                    "Обратитесь к BIM-специалисту");
+            }
+            fileFunctions.Insert(0, new ObjectDefinition { ShortName = "", FullName = "" });
+
+            Field4_comboBox.DataSource = fileFunctions;
+            Field4_comboBox.SelectedIndex = 0;
+            Field4_comboBox.DisplayMember = "FullName";
+            Field4_comboBox.ValueMember = "ShortName";
+            #endregion
+
+            #region Field #5
+            string[] sectionType = _config.GetSectionType().Keys.ToArray();
+
+            if (fileFunctions == null)
+            {
+                MessageBox.Show("Список типов секций пуст или не был инициализирован. " +
+                    "Обратитесь к BIM-специалисту");
+            }
+            Field5_comboBox.Items.AddRange(sectionType);
+            #endregion
+        }
+
+        #endregion
+
+
 
         //________ Buttons ________________________________________________________________
         private void Control_Click(object sender, EventArgs e)
@@ -72,86 +176,6 @@ namespace NAME_CONSTRUCTOR
         }
 
         //_______________________________________________________________________
-
-        private void InitComboBoxes()
-        {
-            FillComboBoxes();
-
-            Field2_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            Field2_comboBox.DropDownWidth = 500;
-
-            Field3_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            Field3_comboBox.DropDownWidth = 500;
-
-            Field4_comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            Field4_comboBox.DropDownWidth = 500;
-
-        }
-
-        private void FillComboBoxes()
-        {
-            #region Field #2
-            List<ObjectDefinition> disciplines = XmlHandler.GetElementsAsObjectDefinitionFromRoot(
-                $"{DataPath}Disciplines.xml");
-
-            if (disciplines == null)
-            {
-                MessageBox.Show("Список дисциплин пуст или не был инициализирован. " +
-                    "Обратитесь к BIM-специалисту");
-            }
-            disciplines.Insert(0, new ObjectDefinition { ShortName = "", FullName = "" });
-            Field2_comboBox.DataSource = disciplines;
-            Field2_comboBox.SelectedIndex = 0;
-            Field2_comboBox.DisplayMember = "FullName";
-            Field2_comboBox.ValueMember = "ShortName";
-            #endregion
-
-            #region Field #3
-            List<ObjectDefinition> objectTypes = XmlHandler.GetElementsAsObjectDefinitionFromRoot(
-                $"{DataPath}ObjectTypes.xml");
-            if (objectTypes == null)
-            {
-                MessageBox.Show("Список типов объектов пуст или не был инициализирован. " +
-                    "Обратитесь к BIM-специалисту");
-            }
-            objectTypes.Insert(0, new ObjectDefinition { ShortName = "", FullName = "" });
-
-            Field3_comboBox.DataSource = objectTypes;
-            Field3_comboBox.SelectedIndex = 0;
-            Field3_comboBox.DisplayMember = "FullName";
-            Field3_comboBox.ValueMember = "ShortName";
-            #endregion
-
-            #region Field #4
-            List<ObjectDefinition> fileFunctions = XmlHandler.GetElementsAsObjectDefinitionFromRoot(
-                $"{DataPath}FileFunctions.xml");
-
-            if (fileFunctions == null)
-            {
-                MessageBox.Show("Список подразделов пуст или не был инициализирован. " +
-                    "Обратитесь к BIM-специалисту");
-            }
-            fileFunctions.Insert(0, new ObjectDefinition { ShortName = "", FullName = "" });
-
-            Field4_comboBox.DataSource = fileFunctions;
-            Field4_comboBox.SelectedIndex = 0;
-            Field4_comboBox.DisplayMember = "FullName";
-            Field4_comboBox.ValueMember = "ShortName";
-            #endregion
-
-            #region Field #5
-            string[] sectionType = XmlHandler.GetElementsNamesFromRoot(
-                $"{DataPath}SectionType.xml")
-                .ToArray();
-
-            if (fileFunctions == null)
-            {
-                MessageBox.Show("Список типов секций пуст или не был инициализирован. " +
-                    "Обратитесь к BIM-специалисту");
-            }
-            Field5_comboBox.Items.AddRange(sectionType);
-            #endregion
-        }
 
         private void ChangeControlButtonName()
         {
@@ -227,5 +251,7 @@ namespace NAME_CONSTRUCTOR
             _logger.Clear();
 
         }
+
+
     }
 }

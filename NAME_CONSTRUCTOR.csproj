@@ -98,7 +98,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config%281%29\Config.cs" />
+    <Compile Include="Config\Config.cs" />
     <Compile Include="DomaimCode\DataStructures\ObjectDefinition.cs" />
     <Compile Include="DomaimCode\Util\Logger.cs" />
     <Compile Include="GUI\NameConstructrorForm.cs">

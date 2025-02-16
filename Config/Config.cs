@@ -56,13 +56,12 @@ namespace NAME_CONSTRUCTOR
             {
                 _fileInfo = new FileInfo(_configPath); 
             }
-            List<ConfigDataType> keys = new List<ConfigDataType>(_configDataTypeDict.Keys);
-            int index = keys.IndexOf(configDataType);
+            
             Dictionary<string, string> currentDictionary = _configDataTypeDict[configDataType];
 
             using (var package = new ExcelPackage(_fileInfo))
             {
-                var worksheet = package.Workbook.Worksheets[index];
+                var worksheet = package.Workbook.Worksheets[configDataType.ToString()];
                 int row = 2;
 
                 while (worksheet.Cells[row, 1].Text != string.Empty || worksheet.Cells[row, 2].Text != string.Empty)
